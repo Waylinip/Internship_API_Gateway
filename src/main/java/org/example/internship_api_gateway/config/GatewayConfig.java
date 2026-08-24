@@ -1,5 +1,6 @@
 package org.example.internship_api_gateway.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
@@ -7,25 +8,35 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class GatewayConfig {
+
+    @Value("${services.auth.url}")
+    private String authServiceUrl;
+
+    @Value("${services.user.url}")
+    private String userServiceUrl;
+
+    @Value("${services.order.url}")
+    private String orderServiceUrl;
+
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
 
                 .route("auth-service", r -> r
                         .path("/api/auth/**")
-                        .uri("http://auth-service:8081"))
+                        .uri(authServiceUrl))
                 .route("user-service", r -> r
                         .path("/api/users/**")
-                        .uri("http://user-service:8082"))
+                        .uri(userServiceUrl))
                 .route("user-service", r -> r
                         .path("/api/cards/**")
-                        .uri("http://user-service:8082"))
+                        .uri(userServiceUrl))
                 .route("order-service", r -> r
                         .path("/api/orders/**")
-                        .uri("http://order-service:8083"))
+                        .uri(orderServiceUrl))
                 .route("item-service", r -> r
                         .path("/api/items/**")
-                        .uri("http://order-service:8083"))
+                        .uri(orderServiceUrl))
                 .build();
     }
 }
