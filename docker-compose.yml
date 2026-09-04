@@ -50,7 +50,7 @@ services:
 
   mongodb:
     image: mongo:7.0
-    container_name: mongodb
+    container_name: internship-mongodb
     ports:
       - "27018:27017"
     environment:
@@ -62,7 +62,7 @@ services:
 
   kafka:
     image: apache/kafka:3.7.0
-    container_name: payment-kafka
+    container_name: internship-kafka
     ports:
       - "9092:9092"
       - "9094:9094"
@@ -92,12 +92,9 @@ services:
       JWT_ACCESS_EXPIRATION: ${JWT_ACCESS_EXPIRATION}
       JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION}
       USER_SERVICE_BASE_URL: http://user-service:8082
-      SPRING_DATA_REDIS_HOST: redis
-      SPRING_DATA_REDIS_PORT: 6379
     depends_on:
       - auth-db
       - user-service
-      - redis
     restart: unless-stopped
 
   user-service:
@@ -137,7 +134,7 @@ services:
     restart: unless-stopped
 
   payment-service:
-    container_name: payment-service
+    container_name: internship_payment-service
     build:
       context: ../Internship_Payment_Service
       dockerfile: Dockerfile
@@ -165,6 +162,10 @@ services:
       - "8084:8084"
     environment:
       JWT_SECRET: ${JWT_SECRET}
+      AUTH_SERVICE_URL: http://auth-service:8081
+      USER_SERVICE_URL: http://user-service:8082
+      ORDER_SERVICE_URL: http://order-service:8083
+      PAYMENT_SERVICE_URL: http://payment-service:8080
     depends_on:
       - auth-service
       - user-service
