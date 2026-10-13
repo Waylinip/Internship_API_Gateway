@@ -31,7 +31,7 @@ public class GatewayConfig {
                 .route("user-service", r -> r
                         .path("/api/users/**")
                         .uri(userServiceUrl))
-                .route("user-service", r -> r
+                .route("card-service", r -> r
                         .path("/api/cards/**")
                         .uri(userServiceUrl))
                 .route("order-service", r -> r
@@ -43,6 +43,9 @@ public class GatewayConfig {
                 .route("payment-service", r -> r
                         .path("/api/payments/**")
                         .uri(paymentServiceUrl))
+                .route("admin-auth-service", r -> r
+                        .path("/api/admin/**")
+                        .uri(authServiceUrl))
                 .build();
     }
 }
